@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">KotlinChatApp</string>
+    <string name="empty_message">Message shouldn\'t be empty</string>
 </resources>

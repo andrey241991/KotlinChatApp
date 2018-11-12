@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), MainActivityView, SetPositionInterface
         presenter = MainPresenter(this)
         initAdapter()
 
-        btnOk.setOnClickListener({ presenter.btnOkClick(edText.text.toString(), firstUserSelected, messages.size) })
+        btnOk.setOnClickListener({ presenter.btnOkClick(edText.text.toString(), firstUserSelected, messages.size+1) })
         radioGroup.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.rbFirst -> firstUserSelected = true
@@ -49,13 +49,13 @@ class MainActivity : AppCompatActivity(), MainActivityView, SetPositionInterface
     }
 
     override fun sendMessageFromFirstUser(text: String, positionToAdd:Int) {
-        messages.add(positionToAdd, UserFirstMessage(text))
+        messages.add(UserFirstMessage(text))
         presenter.setMessageCounters(messages)
         adapter.notifyItemInserted(positionToAdd)
     }
 
     override fun sendMessageFromSecondUser(text: String, positionToAdd:Int) {
-        messages.add(positionToAdd, UserSecondMessage(text))
+        messages.add(UserSecondMessage(text))
         presenter.setMessageCounters(messages)
         adapter.notifyItemInserted(positionToAdd)
     }
@@ -86,9 +86,19 @@ class MainActivity : AppCompatActivity(), MainActivityView, SetPositionInterface
     }
 
     override fun editMessage(newText: String, selectedPosition: Int, firstUser: Boolean) {
-        this.selectedPosition = selectedPosition
-        deleteMessage()
-        presenter.btnOkClick(newText, firstUser, selectedPosition-1)
+        presenter.editMessage(newText, selectedPosition, firstUser)
+    }
+
+    override fun editMessageFromFirstUser(newText: String, selectedPosition: Int) {
+        messages.removeAt(selectedPosition-1)
+        messages.add(selectedPosition-1, UserFirstMessage(newText))
+        adapter.notifyItemChanged(selectedPosition)
+    }
+
+    override fun editMessageFromSecondUser(newText: String, selectedPosition: Int) {
+        messages.removeAt(selectedPosition-1)
+        messages.add(selectedPosition-1, UserSecondMessage(newText))
+        adapter.notifyItemChanged(selectedPosition)
     }
 
     fun cancelAction() {
@@ -96,7 +106,7 @@ class MainActivity : AppCompatActivity(), MainActivityView, SetPositionInterface
     }
 
     override fun showEmptyErrorToast() {
-        Toast.makeText(this, "Message shouldn't be empty", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.empty_message), Toast.LENGTH_SHORT).show()
     }
 
 }

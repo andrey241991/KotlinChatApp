@@ -24,4 +24,11 @@ class MainPresenter(private val mainActivityView: MainActivityView) {
         mainActivityView.setCounters(counters);
     }
 
+    fun editMessage(newText: String, selectedPosition: Int, firstUser: Boolean) {
+        when (firstUser) {
+            true -> mainActivityView.editMessageFromFirstUser(newText, selectedPosition)
+            false -> mainActivityView.editMessageFromSecondUser(newText, selectedPosition)
+        }
+    }
+
 }

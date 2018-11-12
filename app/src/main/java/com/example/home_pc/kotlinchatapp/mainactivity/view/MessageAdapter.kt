@@ -1,8 +1,10 @@
 package com.example.home_pc.kotlinchatapp.mainactivity.view
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
@@ -30,6 +32,7 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
     lateinit var setPositionInterface: SetPositionInterface
     lateinit var textView: TextView
     lateinit var editText: EditText
+    lateinit var context: Context
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val layoutResource: Int = getLayout(viewType)
@@ -80,6 +83,7 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
         editText.visibility = View.VISIBLE
         editText.setText(text)
         editText.requestFocus()
+        showKeyboard()
 
         editText.setOnEditorActionListener(object : OnEditorActionListener {
             override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
@@ -95,10 +99,18 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
                     textView.text = newText
                     val firstUser: Boolean = (messages.get(selectedPosition-1) is UserFirstMessage)
                     onMessageEditInterface.editMessage(newText, selectedPosition, firstUser)
+
                 }
                 return true
             }
         })
+    }
+
+   private fun showKeyboard(){
+        editText.postDelayed({
+            val keyboard = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            keyboard!!.showSoftInput(editText, 0)
+        }, 200)
     }
 
 
@@ -113,6 +125,7 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
             setPositionInterface.setPosition(selectedPosition)
             textView = itemView.findViewById(R.id.txt)
             editText = itemView.findViewById(R.id.ed_text)
+            context = itemView.context
         }
 
         fun bind(text: String) {
