@@ -14,6 +14,7 @@ import com.example.home_pc.kotlinchatapp.SetPositionInterface
 import com.example.home_pc.kotlinchatapp.entity.GeneralMessage
 import com.example.home_pc.kotlinchatapp.entity.UserFirstMessage
 import com.example.home_pc.kotlinchatapp.entity.UserSecondMessage
+import com.example.home_pc.kotlinchatapp.mainactivity.presenter.MainPresenter
 
 
 class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
@@ -33,6 +34,8 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
     lateinit var textView: TextView
     lateinit var editText: EditText
     lateinit var context: Context
+
+    lateinit var presenter: MainPresenter
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val layoutResource: Int = getLayout(viewType)

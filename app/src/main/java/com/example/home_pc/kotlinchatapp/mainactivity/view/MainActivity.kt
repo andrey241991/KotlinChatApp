@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity(), MainActivityView, SetPositionInterface
 
     private fun initAdapter() {
         adapter = MessageAdapter()
+        adapter.presenter = presenter
         adapter.setPositionInterface = this
         adapter.onMessageEditInterface = this
         adapter.messages = messages
