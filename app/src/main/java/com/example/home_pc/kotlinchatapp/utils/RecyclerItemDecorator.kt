@@ -1,4 +1,4 @@
-package com.example.home_pc.kotlinchatapp
+package com.example.home_pc.kotlinchatapp.utils
 
 import android.graphics.Rect
 import android.view.View
